@@ -15,13 +15,17 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-// MongoDB Connection (optional - app works without it too)
+// MongoDB Connection
 const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/s3cinematics');
-    console.log('✅ MongoDB Connected Successfully');
+    if (process.env.MONGODB_URI) {
+      await mongoose.connect(process.env.MONGODB_URI);
+      console.log('✅ MongoDB Connected Successfully');
+    } else {
+      console.warn('⚠️ No MONGODB_URI found - running without database. Orders work via WhatsApp.');
+    }
   } catch (err) {
-    console.warn('⚠️  MongoDB not available - running without database. Orders will still work via email/WhatsApp.');
+    console.warn('⚠️  MongoDB connection failed:', err.message);
   }
 };
 connectDB();
@@ -30,15 +34,7 @@ connectDB();
 app.use('/api/orders', orderRoutes);
 app.use('/api/contact', contactRoutes);
 
-// Serve React build in production
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, 'client', 'dist')));
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
-  });
-}
-
-if (!process.env.VERCEL) {
+if (process.env.NODE_ENV !== 'production') {
   app.listen(PORT, () => {
     console.log(`🚀 S3 Cinematics Server running on port ${PORT}`);
   });
