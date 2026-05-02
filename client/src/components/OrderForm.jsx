@@ -46,8 +46,8 @@ export default function OrderForm({ selectedPlan, onClearPlan }) {
         // Auto-open WhatsApp so client sends order to owner directly
         if (data.clientWhatsappUrl) {
           setTimeout(() => {
-            window.open(data.clientWhatsappUrl, '_blank');
-          }, 500);
+            window.location.href = data.clientWhatsappUrl;
+          }, 2000);
         }
       } else {
         alert(data.message || 'Something went wrong!');

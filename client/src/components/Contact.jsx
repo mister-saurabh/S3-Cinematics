@@ -29,7 +29,9 @@ export default function Contact() {
         setSent(true);
         // Auto-open WhatsApp with the contact message
         if (data.whatsappUrl) {
-          window.open(data.whatsappUrl, '_blank');
+          setTimeout(() => {
+            window.location.href = data.whatsappUrl;
+          }, 2000);
         }
         setForm({ name: '', email: '', message: '' });
         setTimeout(() => setSent(false), 8000);
