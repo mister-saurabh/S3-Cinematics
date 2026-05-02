@@ -38,6 +38,11 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-app.listen(PORT, () => {
-  console.log(`🚀 S3 Cinematics Server running on port ${PORT}`);
-});
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`🚀 S3 Cinematics Server running on port ${PORT}`);
+  });
+}
+
+// Export for Vercel Serverless
+module.exports = app;
