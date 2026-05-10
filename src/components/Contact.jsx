@@ -18,12 +18,23 @@ export default function Contact() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+
+    // Build WhatsApp message
+    const waText = `💬 *New Inquiry — S3 Cinematics*\n\n` +
+      `👤 *Name:* ${form.name}\n` +
+      `📧 *Email:* ${form.email}\n` +
+      `📝 *Message:* ${form.message}\n\n` +
+      `— Sent from S3 Cinematics Website`;
+    
+    // Auto-open WhatsApp
+    window.open(`https://wa.me/919793483930?text=${encodeURIComponent(waText)}`, '_blank');
+
+    // Also try EmailJS in background (bonus)
     try {
-      // Send via EmailJS REST API
       const emailJsData = {
-        service_id: import.meta.env.VITE_EMAILJS_SERVICE_ID || 'default_service',
-        template_id: import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'template_id',
-        user_id: import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'public_key',
+        service_id: import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        template_id: import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        user_id: import.meta.env.VITE_EMAILJS_PUBLIC_KEY,
         template_params: {
           from_name: form.name,
           from_email: form.email,
@@ -33,24 +44,18 @@ export default function Contact() {
           budget: 'N/A'
         }
       };
+      if (emailJsData.service_id && emailJsData.template_id && emailJsData.user_id) {
+        fetch('https://api.emailjs.com/api/v1.0/email/send', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(emailJsData),
+        }).catch(() => {});
+      }
+    } catch (_) {}
 
-      await fetch('https://api.emailjs.com/api/v1.0/email/send', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(emailJsData),
-      });
-
-      setSent(true);
-      setForm({ name: '', email: '', message: '' });
-      setTimeout(() => setSent(false), 8000);
-    } catch (err) {
-      // Fallback: open WhatsApp with the message
-      const waText = `Hi, I'm ${form.name}.\nEmail: ${form.email}\n\n${form.message}`;
-      window.open(`https://wa.me/919793483930?text=${encodeURIComponent(waText)}`, '_blank');
-      setSent(true);
-      setForm({ name: '', email: '', message: '' });
-      setTimeout(() => setSent(false), 8000);
-    }
+    setSent(true);
+    setForm({ name: '', email: '', message: '' });
+    setTimeout(() => setSent(false), 8000);
     setLoading(false);
   };
 
@@ -97,14 +102,24 @@ export default function Contact() {
         <div className="form-container">
           {sent ? (
             <div className="form-success">
-              <div className="check">✅</div>
-              <h3>Message Sent!</h3>
-              <p>We've received your message and will get back to you shortly!</p>
+              <FaWhatsapp size={48} color="#25d366" />
+              <h3 style={{ marginTop: '12px' }}>WhatsApp Open Ho Gaya! ✅</h3>
+              <p style={{ color: '#fff', fontWeight: 600, marginTop: '8px' }}>Bas Send button dabao aur aapka message Saurabh ko mil jayega!</p>
+              <p style={{ color: '#b0b0c0', fontSize: '13px', marginTop: '6px' }}>Agar WhatsApp nahi khula to niche wale button se manually bhejo:</p>
+              <a href="https://wa.me/919793483930" target="_blank" rel="noopener noreferrer"
+                style={{
+                  display: 'inline-flex', alignItems: 'center', gap: '8px',
+                  background: '#25d366', color: '#fff', padding: '12px 28px',
+                  borderRadius: '50px', textDecoration: 'none', fontWeight: 600,
+                  marginTop: '16px', fontSize: '14px'
+                }}>
+                <FaWhatsapp size={18} /> Open WhatsApp
+              </a>
             </div>
           ) : (
             <>
               <h3>💬 Send a Message</h3>
-              <p className="form-sub">Have a question? Drop us a line — we'll get back to you via email.</p>
+              <p className="form-sub">Have a question? Fill the form — your message will be sent directly to Saurabh on WhatsApp.</p>
               <form onSubmit={handleSubmit}>
                 <div className="form-group">
                   <label>Name</label>
@@ -119,7 +134,7 @@ export default function Contact() {
                   <textarea value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} placeholder="Tell us what you need..." required />
                 </div>
                 <button type="submit" className="btn-submit" disabled={loading}>
-                  {loading ? '⏳ Sending...' : <><FaPaperPlane style={{ marginRight: '8px' }} /> Send Message</>}
+                  {loading ? '⏳ Sending...' : <><FaWhatsapp style={{ marginRight: '8px' }} /> Send via WhatsApp</>}
                 </button>
               </form>
             </>

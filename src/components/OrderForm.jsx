@@ -34,48 +34,46 @@ export default function OrderForm({ selectedPlan, onClearPlan }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    
-    // EmailJS REST API setup
-    const emailJsData = {
-      service_id: import.meta.env.VITE_EMAILJS_SERVICE_ID || 'default_service',
-      template_id: import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'template_id',
-      user_id: import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'public_key',
-      template_params: {
-        from_name: form.name,
-        from_email: form.email,
-        phone: form.whatsapp,
-        service: form.serviceType,
-        budget: form.budget,
-        message: form.description
-      }
-    };
 
+    // Build WhatsApp message with all order details
+    const waText = `🎬 *New Order — S3 Cinematics*\n\n` +
+      `👤 *Name:* ${form.name}\n` +
+      `📧 *Email:* ${form.email || 'Not provided'}\n` +
+      `📱 *WhatsApp:* ${form.whatsapp}\n` +
+      `🎯 *Service:* ${form.serviceType}\n` +
+      `💰 *Budget:* ${form.budget}\n` +
+      `📝 *Details:* ${form.description || 'No details provided'}\n\n` +
+      `— Sent from S3 Cinematics Website`;
+    const waUrl = `https://wa.me/919793483930?text=${encodeURIComponent(waText)}`;
+
+    // Also try EmailJS in background (bonus — even if it fails, WhatsApp is the main channel)
     try {
-      // 1. Try EmailJS first
-      const res = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(emailJsData),
-      });
-
-      // Alternatively, using Formspree if they prefer
-      const formspreeEndpoint = import.meta.env.VITE_FORMSPREE_ENDPOINT;
-      if (!res.ok && formspreeEndpoint) {
-        await fetch(formspreeEndpoint, {
+      const emailJsData = {
+        service_id: import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        template_id: import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        user_id: import.meta.env.VITE_EMAILJS_PUBLIC_KEY,
+        template_params: {
+          from_name: form.name,
+          from_email: form.email,
+          phone: form.whatsapp,
+          service: form.serviceType,
+          budget: form.budget,
+          message: form.description
+        }
+      };
+      if (emailJsData.service_id && emailJsData.template_id && emailJsData.user_id) {
+        fetch('https://api.emailjs.com/api/v1.0/email/send', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(form),
-        });
+          body: JSON.stringify(emailJsData),
+        }).catch(() => {});
       }
+    } catch (_) {}
 
-      // Generate optional WhatsApp URL for the user
-      const waText = `Hi Saurabh, I just placed an order!\n\n*Name:* ${form.name}\n*Service:* ${form.serviceType}\n*Budget:* ${form.budget}\n*Details:* ${form.description}`;
-      const waUrl = `https://wa.me/919793483930?text=${encodeURIComponent(waText)}`;
+    // Auto-open WhatsApp immediately
+    window.open(waUrl, '_blank');
 
-      setSuccess({ clientWhatsappUrl: waUrl });
-    } catch (err) {
-      alert('Failed to place order. Please try again.');
-    }
+    setSuccess({ clientWhatsappUrl: waUrl });
     setLoading(false);
   };
 
@@ -85,41 +83,56 @@ export default function OrderForm({ selectedPlan, onClearPlan }) {
         <div className="order-wrapper">
           <div className="form-container">
             <div className="form-success">
-              <FaCheckCircle size={56} color="#ff2d8a" />
-              <h3 style={{ marginTop: '16px', fontSize: '24px' }}>🎉 Order Confirmed!</h3>
+              <FaCheckCircle size={56} color="#25d366" />
+              <h3 style={{ marginTop: '16px', fontSize: '24px' }}>✅ Almost Done!</h3>
               <p style={{ fontSize: '15px', lineHeight: '1.8', color: '#b0b0c0' }}>
                 Thank you <strong style={{ color: '#ff6bb5' }}>{form.name}</strong>!
-                Your order for <strong style={{ color: '#ff6bb5' }}>{form.serviceType}</strong> has been placed successfully.
+                Your order for <strong style={{ color: '#ff6bb5' }}>{form.serviceType}</strong> is ready.
               </p>
 
-              {/* WhatsApp Confirmation Box (Optional) */}
+              {/* WhatsApp MANDATORY Box */}
               <div style={{
-                background: 'rgba(37,211,102,0.1)', border: '1px solid rgba(37,211,102,0.3)',
-                borderRadius: '14px', padding: '22px', margin: '24px 0', textAlign: 'left'
+                background: 'rgba(37,211,102,0.12)', border: '2px solid rgba(37,211,102,0.5)',
+                borderRadius: '16px', padding: '28px', margin: '24px 0', textAlign: 'center'
               }}>
-                <p style={{ color: '#25d366', fontWeight: 700, margin: '0 0 10px', fontSize: '16px' }}>
-                  <FaWhatsapp style={{ marginRight: '8px', verticalAlign: 'middle' }} />
-                  Optional: Connect on WhatsApp
+                <FaWhatsapp size={40} color="#25d366" />
+                <h4 style={{ color: '#25d366', fontWeight: 800, margin: '12px 0 8px', fontSize: '20px' }}>
+                  👇 Send Your Order on WhatsApp
+                </h4>
+                <p style={{ color: '#fff', fontSize: '15px', margin: '0 0 6px', lineHeight: '1.7', fontWeight: 600 }}>
+                  WhatsApp open ho gaya hoga — bas <span style={{ color: '#25d366', fontSize: '17px' }}>Send</span> button dabao!
                 </p>
-                <p style={{ color: '#b0b0c0', fontSize: '14px', margin: '0 0 16px', lineHeight: '1.7' }}>
-                  We have already received your order via email! If you want a faster response, you can also send this directly to Saurabh on WhatsApp.
+                <p style={{ color: '#b0b0c0', fontSize: '13px', margin: '0 0 20px', lineHeight: '1.6' }}>
+                  Agar WhatsApp automatically nahi khula, to niche button se manually bhejo.
+                  <br />Saurabh tumse WhatsApp par baat karega tumhari requirement ke baare mein.
                 </p>
-                <a href={success.clientWhatsappUrl} target="_blank" rel="noopener noreferrer" className="wa-btn" style={{ display: 'inline-flex' }}>
-                  <FaWhatsapp size={20} /> Send on WhatsApp (Optional)
+                <a href={success.clientWhatsappUrl} target="_blank" rel="noopener noreferrer" className="wa-btn"
+                  style={{
+                    display: 'inline-flex', alignItems: 'center', gap: '10px',
+                    background: 'linear-gradient(135deg, #25d366, #128C7E)', color: '#fff',
+                    padding: '16px 36px', borderRadius: '50px', textDecoration: 'none',
+                    fontWeight: 700, fontSize: '16px', letterSpacing: '0.5px',
+                    boxShadow: '0 8px 30px rgba(37,211,102,0.4)',
+                    transition: 'all 0.3s ease'
+                  }}>
+                  <FaWhatsapp size={22} /> Send Order on WhatsApp Now
                 </a>
+                <p style={{ color: '#ff6bb5', fontSize: '12px', marginTop: '14px', fontWeight: 600 }}>
+                  ⚠️ Order tabhi confirm hoga jab aap WhatsApp pe message bhejoge
+                </p>
               </div>
 
-              {/* Next Steps */}
+              {/* Steps */}
               <div style={{
                 background: 'rgba(255,45,138,0.08)', border: '1px solid rgba(255,45,138,0.2)',
                 borderRadius: '14px', padding: '22px', margin: '16px 0', textAlign: 'left'
               }}>
-                <p style={{ color: '#ff6bb5', fontWeight: 700, margin: '0 0 12px', fontSize: '15px' }}>📱 What Happens Next?</p>
+                <p style={{ color: '#ff6bb5', fontWeight: 700, margin: '0 0 12px', fontSize: '15px' }}>📱 Kaise hoga aapka kaam?</p>
                 <div style={{ color: '#b0b0c0', fontSize: '14px', lineHeight: '2' }}>
-                  <p style={{ margin: '0' }}>✅ <strong style={{ color: '#fff' }}>Step 1:</strong> We review your requirements</p>
-                  <p style={{ margin: '0' }}>✅ <strong style={{ color: '#fff' }}>Step 2:</strong> Saurabh will contact you shortly</p>
-                  <p style={{ margin: '0' }}>✅ <strong style={{ color: '#fff' }}>Step 3:</strong> Finalize the project details</p>
-                  <p style={{ margin: '0' }}>✅ <strong style={{ color: '#fff' }}>Step 4:</strong> Get your amazing AI ad delivered! 🎬</p>
+                  <p style={{ margin: '0' }}>✅ <strong style={{ color: '#fff' }}>Step 1:</strong> WhatsApp pe message Send karo (upar button se)</p>
+                  <p style={{ margin: '0' }}>✅ <strong style={{ color: '#fff' }}>Step 2:</strong> Saurabh kuch ghanton mein reply karega</p>
+                  <p style={{ margin: '0' }}>✅ <strong style={{ color: '#fff' }}>Step 3:</strong> WhatsApp pe requirements discuss hogi</p>
+                  <p style={{ margin: '0' }}>✅ <strong style={{ color: '#fff' }}>Step 4:</strong> Aapka amazing AI ad deliver hoga! 🎬</p>
                 </div>
               </div>
 
@@ -145,7 +158,7 @@ export default function OrderForm({ selectedPlan, onClearPlan }) {
               <button
                 className="btn-primary"
                 style={{ marginTop: '12px', fontSize: '13px', padding: '12px 28px' }}
-                onClick={() => { setSuccess(null); setForm({ name: '', email: '', whatsapp: '', serviceType: '', description: '' }); if (onClearPlan) onClearPlan(); }}
+                onClick={() => { setSuccess(null); setForm({ name: '', email: '', whatsapp: '', serviceType: '', budget: '', description: '' }); if (onClearPlan) onClearPlan(); }}
               >
                 Place Another Order
               </button>
@@ -160,7 +173,7 @@ export default function OrderForm({ selectedPlan, onClearPlan }) {
     <section className="section order-section" id="book">
       <div className="section-label"><span className="line" /> Book Now</div>
       <h2 className="section-title">Let's Create Your Ad</h2>
-      <p className="section-subtitle">Fill the form below. We will receive your details instantly via email!</p>
+      <p className="section-subtitle">Fill the form below — your order details will be sent directly to Saurabh on WhatsApp!</p>
       <div className="order-wrapper" style={{ marginTop: '40px' }}>
         <div className="form-container">
           <h3>📋 Order Form</h3>
@@ -220,7 +233,7 @@ export default function OrderForm({ selectedPlan, onClearPlan }) {
               {loading ? (
                 '⏳ Processing...'
               ) : (
-                <><FaPaperPlane style={{ marginRight: '8px' }} /> Submit Order</>
+                <><FaWhatsapp style={{ marginRight: '8px' }} /> Submit & Send on WhatsApp</>
               )}
             </button>
           </form>
