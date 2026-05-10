@@ -1,5 +1,4 @@
 import { FaWhatsapp } from 'react-icons/fa';
-import './index.css';
 
 export default function FloatingWhatsApp() {
   return (
