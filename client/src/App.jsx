@@ -7,6 +7,7 @@ import About from './components/About';
 import OrderForm from './components/OrderForm';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import FloatingWhatsApp from './components/FloatingWhatsApp';
 import './index.css';
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
       <OrderForm selectedPlan={selectedPlan} onClearPlan={() => setSelectedPlan(null)} />
       <Contact />
       <Footer />
+      <FloatingWhatsApp />
     </div>
   );
 }

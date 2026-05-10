@@ -14,25 +14,8 @@ export default function Navbar({ scrolled }) {
   return (
     <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
       <a href="#home" className="nav-logo" onClick={(e) => handleClick(e, 'home')} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-        <div style={{
-          width: '52px',
-          height: '52px',
-          borderRadius: '50%',
-          padding: '2px',
-          background: 'linear-gradient(135deg, #ffd700, #ff2d8a, #ff6bb5)',
-          boxShadow: '0 0 15px rgba(255, 45, 138, 0.4)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          transition: 'var(--transition)'
-        }}>
-          <img src={logoImg} alt="S3 Cinematics Logo" style={{ 
-            width: '100%', 
-            height: '100%', 
-            borderRadius: '50%', 
-            objectFit: 'cover',
-            border: '2px solid var(--bg-deep)'
-          }} />
+        <div className="navbar-logo-container">
+          <img src={logoImg} alt="S3 Cinematics Logo" className="navbar-logo-img" />
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
           <span style={{ fontSize: '22px', fontWeight: '900', background: 'var(--gradient-pink)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', lineHeight: '1' }}>S3</span>
