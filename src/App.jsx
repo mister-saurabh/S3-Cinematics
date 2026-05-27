@@ -1,9 +1,17 @@
 import { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
+import FeaturedAd from './components/FeaturedAd';
+import TrustStrip from './components/TrustStrip';
 import Services from './components/Services';
-import Pricing from './components/Pricing';
+import Portfolio from './components/Portfolio';
 import About from './components/About';
+import WhyChooseUs from './components/WhyChooseUs';
+import ProcessSection from './components/ProcessSection';
+import Testimonials from './components/Testimonials';
+import CaseStudy from './components/CaseStudy';
+import Pricing from './components/Pricing';
+import CTASection from './components/CTASection';
 import OrderForm from './components/OrderForm';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
@@ -32,9 +40,17 @@ function App() {
     <div className="app">
       <Navbar scrolled={scrolled} />
       <Hero />
+      <FeaturedAd />
+      <TrustStrip />
       <Services />
-      <Pricing onSelectPlan={handlePlanSelect} />
+      <Portfolio />
       <About />
+      <WhyChooseUs />
+      <ProcessSection />
+      <Testimonials />
+      <CaseStudy />
+      <Pricing onSelectPlan={handlePlanSelect} />
+      <CTASection />
       <OrderForm selectedPlan={selectedPlan} onClearPlan={() => setSelectedPlan(null)} />
       <Contact />
       <Footer />

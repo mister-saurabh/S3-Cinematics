@@ -75,8 +75,8 @@ export default function Contact() {
           }}>
             <div style={{
               width: '84px', height: '84px', borderRadius: '50%', padding: '2px',
-              background: 'linear-gradient(135deg, #ffd700, #ff2d8a, #ff6bb5)',
-              boxShadow: '0 0 15px rgba(255, 45, 138, 0.4)', flexShrink: 0
+              background: 'linear-gradient(135deg, #4DA3FF, #8B5CF6, #4DEEEA)',
+              boxShadow: '0 0 15px rgba(77, 163, 255, 0.4)', flexShrink: 0
             }}>
               <img src={ownerImg2} alt="Saurabh Kr Prajapati" style={{
                 width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover',

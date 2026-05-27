@@ -81,7 +81,7 @@ export default function Pricing({ onSelectPlan }) {
     <section className="section pricing-section" id="pricing">
       <div className="section-label"><span className="line" /> Pricing</div>
       <h2 className="section-title">Simple, Transparent Pricing</h2>
-      <p className="section-subtitle">Choose the perfect plan for your brand. Every plan includes stunning AI-powered video production.</p>
+      <p className="section-subtitle">Choose the perfect plan for your brand. Every plan includes stunning AI-powered cinematic production.</p>
 
       <div className="pricing-grid">
         {plans.map((plan, i) => (

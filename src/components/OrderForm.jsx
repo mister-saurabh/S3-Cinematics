@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { FaWhatsapp, FaCheckCircle, FaPaperPlane, FaPhone, FaInstagram, FaTimes } from 'react-icons/fa';
 
 const serviceOptions = [
-  'Realistic Ad', 'CGI', 'UGC', 'Storytelling Type', '3D Pixar Type', 'Cinematic Ad', 'AI Film Making', 'Website Building'
+  'Cinematic AI Ads', 'CGI', 'UGC', 'Storytelling', '3D Pixar Type', 'AI Avatar Services', 'AI Film Making', 'AI Voice & Dubbing', 'Product Visualization'
 ];
 
 export default function OrderForm({ selectedPlan, onClearPlan }) {
@@ -86,8 +86,8 @@ export default function OrderForm({ selectedPlan, onClearPlan }) {
               <FaCheckCircle size={56} color="#25d366" />
               <h3 style={{ marginTop: '16px', fontSize: '24px' }}>✅ Almost Done!</h3>
               <p style={{ fontSize: '15px', lineHeight: '1.8', color: '#b0b0c0' }}>
-                Thank you <strong style={{ color: '#ff6bb5' }}>{form.name}</strong>!
-                Your order for <strong style={{ color: '#ff6bb5' }}>{form.serviceType}</strong> is ready.
+                Thank you <strong style={{ color: '#4DA3FF' }}>{form.name}</strong>!
+                Your order for <strong style={{ color: '#4DA3FF' }}>{form.serviceType}</strong> is ready.
               </p>
 
               {/* WhatsApp MANDATORY Box */}
@@ -117,17 +117,17 @@ export default function OrderForm({ selectedPlan, onClearPlan }) {
                   }}>
                   <FaWhatsapp size={22} /> Send Order on WhatsApp Now
                 </a>
-                <p style={{ color: '#ff6bb5', fontSize: '12px', marginTop: '14px', fontWeight: 600 }}>
+                <p style={{ color: '#4DA3FF', fontSize: '12px', marginTop: '14px', fontWeight: 600 }}>
                   ⚠️ Order tabhi confirm hoga jab aap WhatsApp pe message bhejoge
                 </p>
               </div>
 
               {/* Steps */}
               <div style={{
-                background: 'rgba(255,45,138,0.08)', border: '1px solid rgba(255,45,138,0.2)',
+                background: 'rgba(77,163,255,0.08)', border: '1px solid rgba(77,163,255,0.2)',
                 borderRadius: '14px', padding: '22px', margin: '16px 0', textAlign: 'left'
               }}>
-                <p style={{ color: '#ff6bb5', fontWeight: 700, margin: '0 0 12px', fontSize: '15px' }}>📱 Kaise hoga aapka kaam?</p>
+                <p style={{ color: '#4DA3FF', fontWeight: 700, margin: '0 0 12px', fontSize: '15px' }}>📱 Kaise hoga aapka kaam?</p>
                 <div style={{ color: '#b0b0c0', fontSize: '14px', lineHeight: '2' }}>
                   <p style={{ margin: '0' }}>✅ <strong style={{ color: '#fff' }}>Step 1:</strong> WhatsApp pe message Send karo (upar button se)</p>
                   <p style={{ margin: '0' }}>✅ <strong style={{ color: '#fff' }}>Step 2:</strong> Saurabh kuch ghanton mein reply karega</p>
@@ -146,11 +146,11 @@ export default function OrderForm({ selectedPlan, onClearPlan }) {
                   <FaWhatsapp /> +91 9793483930
                 </a>
                 <a href="tel:+919793483930"
-                  style={{ color: '#ff6bb5', textDecoration: 'none', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  style={{ color: '#4DA3FF', textDecoration: 'none', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '6px' }}>
                   <FaPhone /> Call Us
                 </a>
                 <a href="https://instagram.com/s3.Cinematics" target="_blank" rel="noopener noreferrer"
-                  style={{ color: '#ff6bb5', textDecoration: 'none', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  style={{ color: '#8B5CF6', textDecoration: 'none', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '6px' }}>
                   <FaInstagram /> @s3.Cinematics
                 </a>
               </div>

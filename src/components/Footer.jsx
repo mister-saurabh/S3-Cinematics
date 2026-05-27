@@ -7,19 +7,28 @@ export default function Footer() {
 
   return (
     <footer className="footer">
+      <div className="footer-glow-line" />
       <div className="footer-content">
         <div className="footer-brand">
           <h3>S3 CINEMATICS</h3>
-          <p>Where AI Meets Imagination. We craft hyper-realistic, cinematic AI advertisements that transform brands and captivate audiences worldwide.</p>
+          <p>Premium AI Creative Agency crafting cinematic content that makes brands impossible to ignore.</p>
         </div>
         <div className="footer-links">
           <h4>Quick Links</h4>
           <a href="#home" onClick={(e) => { e.preventDefault(); scrollTo('home'); }}>Home</a>
           <a href="#services" onClick={(e) => { e.preventDefault(); scrollTo('services'); }}>Services</a>
-          <a href="#pricing" onClick={(e) => { e.preventDefault(); scrollTo('pricing'); }}>Pricing</a>
+          <a href="#work" onClick={(e) => { e.preventDefault(); scrollTo('work'); }}>Work</a>
           <a href="#about" onClick={(e) => { e.preventDefault(); scrollTo('about'); }}>About</a>
-          <a href="#book" onClick={(e) => { e.preventDefault(); scrollTo('book'); }}>Book Now</a>
+          <a href="#process" onClick={(e) => { e.preventDefault(); scrollTo('process'); }}>Process</a>
           <a href="#contact" onClick={(e) => { e.preventDefault(); scrollTo('contact'); }}>Contact</a>
+        </div>
+        <div className="footer-links">
+          <h4>Services</h4>
+          <a href="#services" onClick={(e) => { e.preventDefault(); scrollTo('services'); }}>Cinematic AI Ads</a>
+          <a href="#services" onClick={(e) => { e.preventDefault(); scrollTo('services'); }}>CGI Production</a>
+          <a href="#services" onClick={(e) => { e.preventDefault(); scrollTo('services'); }}>AI Avatars</a>
+          <a href="#services" onClick={(e) => { e.preventDefault(); scrollTo('services'); }}>AI Filmmaking</a>
+          <a href="#services" onClick={(e) => { e.preventDefault(); scrollTo('services'); }}>Product Visualization</a>
         </div>
         <div className="footer-social">
           <h4>Connect</h4>
@@ -31,7 +40,7 @@ export default function Footer() {
         </div>
       </div>
       <div className="footer-bottom">
-        <p>© {new Date().getFullYear()} S3 Cinematics — All Rights Reserved. Crafted with 🩷 & AI</p>
+        <p>© {new Date().getFullYear()} S3 Cinematics — All Rights Reserved. Crafted with 💙 & AI</p>
       </div>
     </footer>
   );
