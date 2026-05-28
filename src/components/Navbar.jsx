@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import logoImg from '../assets/logo.jpg';
 
@@ -15,10 +15,22 @@ const navItems = [
 export default function Navbar({ scrolled }) {
   const [open, setOpen] = useState(false);
 
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [open]);
+
   const handleClick = (e, id) => {
     e.preventDefault();
     setOpen(false);
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    setTimeout(() => {
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    }, 350);
   };
 
   return (
@@ -32,7 +44,9 @@ export default function Navbar({ scrolled }) {
           <span style={{ fontSize: '10px', letterSpacing: '2px', color: 'var(--text-secondary)', fontWeight: '400', lineHeight: '1' }}>CINEMATICS</span>
         </div>
       </a>
-      <ul className={`nav-links ${open ? 'open' : ''}`}>
+
+      {/* Desktop nav links */}
+      <ul className="nav-links-desktop">
         {navItems.map((item) => (
           <li key={item.id}>
             <a href={`#${item.id}`} onClick={(e) => handleClick(e, item.id)}>
@@ -42,6 +56,40 @@ export default function Navbar({ scrolled }) {
         ))}
         <li><a href="#book" className="nav-cta" onClick={(e) => handleClick(e, 'book')}>Book a Call</a></li>
       </ul>
+
+      {/* Mobile backdrop overlay */}
+      <div
+        className={`mobile-menu-backdrop ${open ? 'active' : ''}`}
+        onClick={() => setOpen(false)}
+      />
+
+      {/* Mobile side panel */}
+      <div className={`mobile-menu-panel ${open ? 'open' : ''}`}>
+        <div className="mobile-menu-header">
+          <span className="mobile-menu-title">Menu</span>
+          <button className="mobile-menu-close" onClick={() => setOpen(false)} aria-label="Close menu">
+            <span />
+            <span />
+          </button>
+        </div>
+        <div className="mobile-menu-divider" />
+        <ul className="mobile-menu-links">
+          {navItems.map((item, i) => (
+            <li key={item.id} style={{ transitionDelay: open ? `${0.1 + i * 0.05}s` : '0s' }}>
+              <a href={`#${item.id}`} onClick={(e) => handleClick(e, item.id)}>
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+        <div className="mobile-menu-divider" />
+        <div className="mobile-menu-cta-wrapper" style={{ transitionDelay: open ? '0.5s' : '0s' }}>
+          <a href="#book" className="mobile-menu-cta" onClick={(e) => handleClick(e, 'book')}>
+            Book a Call
+          </a>
+        </div>
+      </div>
+
       <button className="hamburger" onClick={() => setOpen(!open)} aria-label="Menu">
         <span style={open ? { transform: 'rotate(45deg) translate(5px,5px)' } : {}} />
         <span style={open ? { opacity: 0 } : {}} />
