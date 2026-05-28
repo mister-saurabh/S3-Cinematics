@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 
 import logoImg from '../assets/logo.jpg';
 
@@ -30,40 +31,19 @@ export default function Navbar({ scrolled }) {
     setOpen(false);
     setTimeout(() => {
       document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-    }, 350);
+    }, 400);
   };
 
-  return (
-    <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
-      <a href="#home" className="nav-logo" onClick={(e) => handleClick(e, 'home')} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-        <div className="navbar-logo-container">
-          <img src={logoImg} alt="S3 Cinematics Logo" className="navbar-logo-img" />
-        </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-          <span style={{ fontSize: '22px', fontWeight: '900', background: 'var(--gradient-accent)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', lineHeight: '1' }}>S3</span>
-          <span style={{ fontSize: '10px', letterSpacing: '2px', color: 'var(--text-secondary)', fontWeight: '400', lineHeight: '1' }}>CINEMATICS</span>
-        </div>
-      </a>
-
-      {/* Desktop nav links */}
-      <ul className="nav-links-desktop">
-        {navItems.map((item) => (
-          <li key={item.id}>
-            <a href={`#${item.id}`} onClick={(e) => handleClick(e, item.id)}>
-              {item.label}
-            </a>
-          </li>
-        ))}
-        <li><a href="#book" className="nav-cta" onClick={(e) => handleClick(e, 'book')}>Book a Call</a></li>
-      </ul>
-
-      {/* Mobile backdrop overlay */}
+  // Mobile drawer rendered via Portal — outside the <nav> DOM entirely
+  const mobileDrawer = createPortal(
+    <>
+      {/* Backdrop overlay */}
       <div
         className={`mobile-menu-backdrop ${open ? 'active' : ''}`}
         onClick={() => setOpen(false)}
       />
 
-      {/* Mobile side panel */}
+      {/* Right-side sliding panel */}
       <div className={`mobile-menu-panel ${open ? 'open' : ''}`}>
         <div className="mobile-menu-header">
           <span className="mobile-menu-title">Menu</span>
@@ -75,7 +55,7 @@ export default function Navbar({ scrolled }) {
         <div className="mobile-menu-divider" />
         <ul className="mobile-menu-links">
           {navItems.map((item, i) => (
-            <li key={item.id} style={{ transitionDelay: open ? `${0.1 + i * 0.05}s` : '0s' }}>
+            <li key={item.id} style={{ transitionDelay: open ? `${0.08 + i * 0.05}s` : '0s' }}>
               <a href={`#${item.id}`} onClick={(e) => handleClick(e, item.id)}>
                 {item.label}
               </a>
@@ -89,12 +69,44 @@ export default function Navbar({ scrolled }) {
           </a>
         </div>
       </div>
+    </>,
+    document.body
+  );
 
-      <button className="hamburger" onClick={() => setOpen(!open)} aria-label="Menu">
-        <span style={open ? { transform: 'rotate(45deg) translate(5px,5px)' } : {}} />
-        <span style={open ? { opacity: 0 } : {}} />
-        <span style={open ? { transform: 'rotate(-45deg) translate(5px,-5px)' } : {}} />
-      </button>
-    </nav>
+  return (
+    <>
+      <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
+        <a href="#home" className="nav-logo" onClick={(e) => handleClick(e, 'home')} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div className="navbar-logo-container">
+            <img src={logoImg} alt="S3 Cinematics Logo" className="navbar-logo-img" />
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+            <span style={{ fontSize: '22px', fontWeight: '900', background: 'var(--gradient-accent)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', lineHeight: '1' }}>S3</span>
+            <span style={{ fontSize: '10px', letterSpacing: '2px', color: 'var(--text-secondary)', fontWeight: '400', lineHeight: '1' }}>CINEMATICS</span>
+          </div>
+        </a>
+
+        {/* Desktop nav links */}
+        <ul className="nav-links-desktop">
+          {navItems.map((item) => (
+            <li key={item.id}>
+              <a href={`#${item.id}`} onClick={(e) => handleClick(e, item.id)}>
+                {item.label}
+              </a>
+            </li>
+          ))}
+          <li><a href="#book" className="nav-cta" onClick={(e) => handleClick(e, 'book')}>Book a Call</a></li>
+        </ul>
+
+        <button className="hamburger" onClick={() => setOpen(!open)} aria-label="Menu">
+          <span style={open ? { transform: 'rotate(45deg) translate(5px,5px)' } : {}} />
+          <span style={open ? { opacity: 0 } : {}} />
+          <span style={open ? { transform: 'rotate(-45deg) translate(5px,-5px)' } : {}} />
+        </button>
+      </nav>
+
+      {/* Portal: renders mobile drawer outside <nav> into document.body */}
+      {mobileDrawer}
+    </>
   );
 }
