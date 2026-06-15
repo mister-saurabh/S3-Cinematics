@@ -1,10 +1,7 @@
+import { Link } from 'react-router-dom';
 import { FaInstagram, FaWhatsapp, FaEnvelope } from 'react-icons/fa';
 
 export default function Footer() {
-  const scrollTo = (id) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-  };
-
   return (
     <footer className="footer">
       <div className="footer-glow-line" />
@@ -15,20 +12,22 @@ export default function Footer() {
         </div>
         <div className="footer-links">
           <h4>Quick Links</h4>
-          <a href="#home" onClick={(e) => { e.preventDefault(); scrollTo('home'); }}>Home</a>
-          <a href="#services" onClick={(e) => { e.preventDefault(); scrollTo('services'); }}>Services</a>
-          <a href="#work" onClick={(e) => { e.preventDefault(); scrollTo('work'); }}>Work</a>
-          <a href="#about" onClick={(e) => { e.preventDefault(); scrollTo('about'); }}>About</a>
-          <a href="#process" onClick={(e) => { e.preventDefault(); scrollTo('process'); }}>Process</a>
-          <a href="#contact" onClick={(e) => { e.preventDefault(); scrollTo('contact'); }}>Contact</a>
+          <Link to="/">Home</Link>
+          <Link to="/services">Services</Link>
+          <Link to="/work">Work</Link>
+          <Link to="/sandbox">AI Sandbox</Link>
+          <Link to="/about">About</Link>
+          <Link to="/process">Process</Link>
+          <Link to="/blog">Insights</Link>
+          <Link to="/contact">Contact</Link>
         </div>
         <div className="footer-links">
           <h4>Services</h4>
-          <a href="#services" onClick={(e) => { e.preventDefault(); scrollTo('services'); }}>Cinematic AI Ads</a>
-          <a href="#services" onClick={(e) => { e.preventDefault(); scrollTo('services'); }}>CGI Production</a>
-          <a href="#services" onClick={(e) => { e.preventDefault(); scrollTo('services'); }}>AI Avatars</a>
-          <a href="#services" onClick={(e) => { e.preventDefault(); scrollTo('services'); }}>AI Filmmaking</a>
-          <a href="#services" onClick={(e) => { e.preventDefault(); scrollTo('services'); }}>Product Visualization</a>
+          <Link to="/services">Cinematic AI Ads</Link>
+          <Link to="/services">CGI Production</Link>
+          <Link to="/services">AI Avatars</Link>
+          <Link to="/services">AI Filmmaking</Link>
+          <Link to="/services">Product Visualization</Link>
         </div>
         <div className="footer-social">
           <h4>Connect</h4>
